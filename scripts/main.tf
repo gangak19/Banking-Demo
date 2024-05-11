@@ -113,6 +113,16 @@ resource "aws_instance" "kubernatesmaster" {
   
 }
 
+resource "null_resource" "local_command" {
+  provisioner "local-exec" {
+    command = "ansible-playbook /var/lib/jenkins/workspace/Banking/scripts/monitring-deployment.yml"
+  }
+  depends_on = [
+	  aws_instance.kubernatesmaster
+  ]
+
+}
+
 resource "aws_instance" "kubernatesworker" {
   ami             = "ami-04b70fa74e45c3917"
   instance_type   = "t2.micro"
@@ -142,15 +152,7 @@ resource "aws_instance" "kubernatesworker" {
 }
 
 // check for errors newly added part of code
-resource "null_resource" "local_command" {
-  provisioner "local-exec" {
-    command = "ansible-playbook /var/lib/jenkins/workspace/Banking/scripts/monitring-deployment.yml"
-  }
-  depends_on = [
-	  aws_instance.kubernatesworker
-  ]
 
-}
 
 resource "aws_instance" "monitringserver" {
   ami             = "ami-04b70fa74e45c3917"
