@@ -8,7 +8,7 @@ pipeline {
     stage('Git checkout') {
       steps {
          echo 'This is for cloning the gitrepo'
-         git branch: 'main', url: 'https://github.com/Ravi4090/Banking-Demo.git'
+         git branch: 'main', url: 'https://github.com/gangak19/Banking-Demo.git'
                           }
             }
     stage('Create a Package') {
@@ -25,19 +25,19 @@ pipeline {
             } */
     stage('Create a Docker image') {
       steps {
-        sh 'docker build -t ravishankar119/banking:1.0 .'
+        sh 'docker build -t gangak/banking:1.0 .'
                     }
             }
     stage('Login to Dockerhub') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'Dockerlogin-user', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhublogin')]) {        
+        withCredentials([usernamePassword(credentialsId: 'dockerhubcreds', passwordVariable: 'dockerhubpass', usernameVariable: 'dockerhublogin')]) {        
         sh 'docker login -u ${dockerhublogin} -p ${dockerhubpass}'
                                                                     }
                                 }
             }
     stage('Push the Docker image') {
       steps {
-        sh 'docker push ravishankar119/banking:1.0'
+        sh 'docker push gangak/banking:1.0'
                                 }
             }
     stage('Create Infrastructure using terraform') {
@@ -46,7 +46,7 @@ pipeline {
             withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkinsIAMuser', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
             sh 'terraform init'
             sh 'terraform validate'
-            sh 'terraform apply --auto-approve -lock=false'
+            // sh 'terraform apply --auto-approve -lock=false'
                       }
                  }
             }
