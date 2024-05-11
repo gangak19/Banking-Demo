@@ -180,6 +180,7 @@ resource "aws_instance" "monitringserver" {
   
   depends_on = [
 	  aws_instance.kubernatesworker
+          null_resource.local_command
 ]
   
 }
