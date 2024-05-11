@@ -156,7 +156,7 @@ resource "aws_instance" "monitringserver" {
   key_name        = "web-key"
   security_groups = [aws_security_group.project-securitygroup.id]
   tags = {
-    Name = "Monitring-Server"
+    Name = "Monitoring-Server"
   }
 
   provisioner "remote-exec" {
@@ -177,7 +177,6 @@ resource "aws_instance" "monitringserver" {
   
   depends_on = [
 	  aws_instance.kubernatesworker
-	  null_resource.local_command
 ]
   
 }
